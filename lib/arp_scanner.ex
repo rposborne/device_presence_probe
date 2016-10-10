@@ -14,6 +14,6 @@ defmodule ArpScanner do
   def split_ip_and_mac(line) do
     [ip, mac] = String.split(line, "\t")
 
-    %{ip: ip, mac_address: mac, seen_at: DateTime.utc_now}
+    %{last_seen_ip: ip, mac_address: mac, last_seen_at: DateTime.utc_now}
   end
 end
