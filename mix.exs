@@ -14,7 +14,7 @@ defmodule Watch.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :httpoison, :poison]]
+    [applications: [:logger, :httpoison, :poison], mod: {DevicePresenceProbe, []}]
   end
 
   # Dependencies can be Hex packages:

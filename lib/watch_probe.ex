@@ -15,12 +15,16 @@ defmodule Watch do
 
   def handle_info(:work, state) do
     # Do the work you desire here
-    IO.puts "Running Arp Scan"
-    json_payload = %{collector_id: @probe_id, devices: ArpScanner.scan } |> Poison.encode!
-    HTTPoison.post!(@url, json_payload, [{"content-type", "application/json"}])
     # Start the timer again
+    scan
     Process.send_after(self(), :work, 1 * 60 * 60 * 50) # In 1 minute
 
     {:noreply, state}
+  end
+
+  def scan do
+    IO.puts "Running Arp Scan"
+    json_payload = %{collector_id: @probe_id, devices: ArpScanner.scan } |> Poison.encode!
+    HTTPoison.post!(@url, json_payload, [{"content-type", "application/json"}])
   end
 end
