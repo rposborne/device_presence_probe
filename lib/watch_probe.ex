@@ -9,6 +9,7 @@ defmodule Watch do
   end
 
   def init(state) do
+    scan
     Process.send_after(self(), :work, 1 * 60 * 60 * 50) # In 2 seconds
     {:ok, state}
   end
@@ -25,6 +26,6 @@ defmodule Watch do
   def scan do
     IO.puts "Running Arp Scan"
     json_payload = %{collector_id: @probe_id, devices: ArpScanner.scan } |> Poison.encode!
-    HTTPoison.post!(@url, json_payload, [{"content-type", "application/json"}])
+    HTTPoison.post(@url, json_payload, [{"content-type", "application/json"}])
   end
 end
