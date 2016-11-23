@@ -1,7 +1,5 @@
 defmodule Watch do
   use GenServer
-
-  @url "http://localhost:4000/api/devices/scan"
   @probe_id  1
 
   def start_link do
@@ -25,7 +23,12 @@ defmodule Watch do
 
   def scan do
     IO.puts "Running Arp Scan"
-    json_payload = %{collector_id: @probe_id, devices: ArpScanner.scan } |> Poison.encode!
-    HTTPoison.post(@url, json_payload, [{"content-type", "application/json"}])
+    IO.puts "Connecting to #{System.get_env("WHITETOWER_URL")}"
+    json_payload = %{devices: ArpScanner.scan } |> Poison.encode!
+    HTTPoison.post(
+      System.get_env("WHITETOWER_URL"),
+      json_payload,
+      [{"content-type", "application/json"}, {"authentication", "token #{System.get_env("WHITETOWER_API_KEY")}"}])
+    IO.puts "Running Arp Scan"
   end
 end
