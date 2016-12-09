@@ -32,7 +32,7 @@ defmodule Watch.Mixfile do
     [{:httpoison, "~> 0.9.0"},
     {:distillery, "~> 0.10"},
     {:poison, "~> 3.0"},
-    {:exrm_deb, "~> 0.0.1"}]
+    {:exrm_deb, github: "johnhamelink/exrm_deb", branch: "feature/distillery-support"}]
   end
 
   def package do
