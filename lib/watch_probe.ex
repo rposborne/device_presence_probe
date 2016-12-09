@@ -39,7 +39,7 @@ defmodule Watch do
       json_payload,
       [
         {"content-type", "application/json"},
-        {"authentication", "token #{key}"}
+        {"authorization", "token #{key}"}
       ]
     )
   end
