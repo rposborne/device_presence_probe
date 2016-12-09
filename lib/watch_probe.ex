@@ -1,6 +1,5 @@
 defmodule Watch do
   use GenServer
-  @probe_id  1
 
   def start_link do
     GenServer.start_link(__MODULE__, %{})
@@ -21,14 +20,27 @@ defmodule Watch do
     {:noreply, state}
   end
 
+  def key do
+    System.get_env("WHITETOWER_API_KEY")
+  end
+
+  def url do
+    System.get_env("WHITETOWER_URL")
+  end
+
   def scan do
     IO.puts "Running Arp Scan"
-    IO.puts "Connecting to #{System.get_env("WHITETOWER_URL")}"
+    IO.puts "Connecting to #{url} as #{key}"
+
     json_payload = %{devices: ArpScanner.scan } |> Poison.encode!
+
     HTTPoison.post(
-      System.get_env("WHITETOWER_URL"),
+      url,
       json_payload,
-      [{"content-type", "application/json"}, {"authentication", "token #{System.get_env("WHITETOWER_API_KEY")}"}])
-    IO.puts "Running Arp Scan"
+      [
+        {"content-type", "application/json"},
+        {"authentication", "token #{key}"}
+      ]
+    )
   end
 end
